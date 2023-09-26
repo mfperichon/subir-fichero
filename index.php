@@ -27,70 +27,71 @@
 </head>
 <body>
 <div class="content-wrapper">
+    <br>
     <section class="container-md">
         <h3>
-            Subir archivos
+            Subir archivos<br>
             <small class="text-body-secondary">proceso para enviar un archivo al servidor con PHP</small>
         </h3>
     </section>
 
-    <?php
-        // incia sesion
-        session_start();
+<?php
+    // incia sesion
+    session_start();
 
-        $mensaje="";
-        $descripcion="";
-        // Recibo el estado de la operacion en las variables de SESSION
-        // Segun el resultado, se genera un alerta diferente (elemento 'alert' de Bootstrap)
-        if (isset($_SESSION['message']) && $_SESSION['message'])
-        {
-            $resultado = $_SESSION['message'];
-            switch ($resultado) {
-                case 'success':
-                    $mensaje="<div class='container-lg'>
-                    <div class='alert alert-success alert-dismissible fade show' role='alert' id='myAlert'>
-                        El archivo se subió con éxtito al servidor!
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
-                </div>";
-                    break;
-                case 'error':
-                    $mensaje="<div class='container-lg'>
-                    <div class='alert alert-danger alert-dismissible fade show' role='alert' id='myAlert'>
-                        Ocurrió un ERRROR al copiar el archivo al directorio. Revisar que el directorio de destino tiene los permisos de acceso
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
-                </div>";
-                    break;
-                case 'invalid_file':
-                    $descripcion = $_SESSION['descripcion'];
-                    $mensaje="<div class='container-lg'>
-                    <div class='alert alert-warning alert-dismissible fade show' role='alert' id='myAlert'>
-                        El archivo que intentó importar tiene un formato INVÁLIDO.<br>Los tipos de archivos permitidos son los siguientes: $descripcion
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
-                </div>";
-                    unset($_SESSION['descripcion']);
-                    break;
-                case 'fail':
-                    $descripcion = $_SESSION['descripcion'];
-                    $mensaje="<div class='container-lg'>
-                    <div class='alert alert-info alert-dismissible fade show' role='alert' id='myAlert'>
-                        Se produjo un error durante la subida del archivo. Por favor revisar el siguiente error:<br> $descripcion
-                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-                    </div>
-                </div>";
-                    unset($_SESSION['descripcion']);
-                    break;
-                default:
-                    $mensaje="";
-            }
-            unset($_SESSION['message']);
+    $mensaje="";
+    $descripcion="";
+    // Recibo el estado de la operacion en las variables de SESSION
+    // Segun el resultado, se genera un alerta diferente (elemento 'alert' de Bootstrap)
+    if (isset($_SESSION['message']) && $_SESSION['message'])
+    {
+        $resultado = $_SESSION['message'];
+        switch ($resultado) {
+            case 'success':
+                $mensaje="<div class='container-lg'>
+                <div class='alert alert-success alert-dismissible fade show' role='alert' id='myAlert'>
+                    El archivo se subió con éxtito al servidor!
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>";
+                break;
+            case 'error':
+                $mensaje="<div class='container-lg'>
+                <div class='alert alert-danger alert-dismissible fade show' role='alert' id='myAlert'>
+                    Ocurrió un ERRROR al copiar el archivo al directorio. Revisar que el directorio de destino tiene los permisos de acceso
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>";
+                break;
+            case 'invalid_file':
+                $descripcion = $_SESSION['descripcion'];
+                $mensaje="<div class='container-lg'>
+                <div class='alert alert-warning alert-dismissible fade show' role='alert' id='myAlert'>
+                    El archivo que intentó importar tiene un formato INVÁLIDO.<br>Los tipos de archivos permitidos son los siguientes: $descripcion
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>";
+                unset($_SESSION['descripcion']);
+                break;
+            case 'fail':
+                $descripcion = $_SESSION['descripcion'];
+                $mensaje="<div class='container-lg'>
+                <div class='alert alert-info alert-dismissible fade show' role='alert' id='myAlert'>
+                    Se produjo un error durante la subida del archivo. Por favor revisar el siguiente error:<br> $descripcion
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>";
+                unset($_SESSION['descripcion']);
+                break;
+            default:
+                $mensaje="";
         }
+        unset($_SESSION['message']);
+    }
 
-        // Aca se muestra el mensaje de alerta segun el resultado de la operacion
-        echo $mensaje; 
-    ?>
+    // Aca se muestra el mensaje de alerta segun el resultado de la operacion
+    echo $mensaje; 
+?>
 
     <section class="content">
         <div class="container">            
@@ -140,8 +141,24 @@
                             ?>
                         </div>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <h3>Leer el directorio usando <i>ScanDir</i></h3>
 
+                            <?php
+                                $dir    = './archivos_subidos';
+                                $files1 = scandir($dir);
+                                //print_r($files1);
+                                foreach ($files1 as $key => $value)
+                                {
+                                  echo $value . '<br>';
+                                }
+                            ?>
+
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -164,7 +181,7 @@
     setTimeout(function () {
         // Cerrar la notificacion 'alert' de Bootstrap
         $('#myAlert').alert('close');
-    }, 5000);
+    }, 3000);
 </script>
 
 </body>
